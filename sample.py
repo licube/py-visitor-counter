@@ -1,44 +1,53 @@
-
+#-*- coding: utf-8 -*-
 __author__ = 'youngbin'
 from SimpleCV import *
 import time
 
-#Threshold
-threshold = 1
+#임계값
+threshold = 1.0
 
-# Initialize the camera
+# 카메라 초기화
 cam = Camera()
 
-# Get Reference Image from camera
-print "Getting Reference Image"
+# 카메라에서 이미지 얻어 기준 이미지로 정하기
+print "기준 이미지 얻는중"
 refImg = cam.getImage()
 
-# Save Image for Reference
+# 기준 이미지 저장
 refImg.save("reference.png")
 
-print "Reference Created"
+print "기준 이미지 생성됨"
 
-# Loop to continuously get images
+# 무한 반복
 while True:
-    # Get New Image from camera
+    # 새 이미지 얻기
     img = cam.getImage()
+    # img.drawText("Showing Reference")
     img.show()
 
-    # Get Differences between two Images
+    # 기준 이미지와 새 이미지 사이 차이 얻기
     imgmath = refImg - img
     print "=========="
-    print imgmath.getNumpyCv2().mean()
+    print imgmath.getNumpy().mean()
     print "=========="
 
+    # 차이가 임계값 보다 크면
     if imgmath.getNumpy().mean() > threshold:
-        #Update Reference
+        print "움직임 감지됨"
+        # 기준 이미지 갱신
         refImg = img
         img.save("reference.png")
         img.drawText("Motion Detected At"+time.strftime("%H:%M:%S"))
+        print "기준 이미지 갱신"
         img.show()
         #Save Image
         img.save("Motion_Detected_At"+time.strftime("%H:%M:%S")+".png")
-        print "Motion Detected"
+        print "갱신시각" + time.strftime("%H:%M:%S")
+    else:
+        print "기준 이미지와 큰 차이 없음 기준 이미지 유지"
+
+
+
 
 
 
