@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 import time, webbrowser
 from operator import add
-from SimpleCV import Color, ColorCurve, Camera, Image, pg, np, cv, HaarCascade, DrawingLayer
+from SimpleCV import *
 from SimpleCV.Display import Display
 
 cam = Camera()
@@ -11,14 +11,13 @@ counter = 0
 # cascades 불러오기
 face_cascade = HaarCascade("HaarCascades/face.xml")
 nose_cascade = HaarCascade("HaarCascades/nose.xml")
+eye_casecade = HaarCascade("HaarCascades/eye.xml")
 stache = Image("stache.png") # 수염 이미지 불러오기
 count = 0
 display = Display((800,600))
-
 #딱봐도 무한반복
 while ( display.isNotDone() ):
     img = cam.getImage()
-    # img = img.scale(.5)
     face = img.findHaarFeatures(face_cascade)
     if face is not None:
         print "FACE is NOT NONE"
@@ -27,10 +26,13 @@ while ( display.isNotDone() ):
             # 얼굴 영역 검출
             face = face.sortArea()
             facesort = face[-1]
-            facesort.show()
+            # facesort.show()
             croped = facesort.crop()
+            FaceHW = facesort.width() * 0.5
+            FaceHH = facesort.height() * 0.5
             # croped.draw()
             noses = croped.findHaarFeatures(nose_cascade)
+            eyes = croped.findHaarFeatures(eye_casecade)
             # croped.save("Face-"+time.strftime("%H:%M:%S")+".png")
             if noses is not None :  # 코 보이는 경우
                 #에이어 생성
@@ -46,11 +48,6 @@ while ( display.isNotDone() ):
 
                 NoseHW = nose.width() * 0.5
                 NoseHH = nose.height() * 0.5
-                FaceHW = facesort.width() * 0.5
-                FaceHH = facesort.height() * 0.5
-
-                FaceX = face.x
-
 
                 # these get the upper left corner of the face/nose
                 # with respect to original image
@@ -61,12 +58,10 @@ while ( display.isNotDone() ):
                 #calculate the mustache position
                 xmust = xf+xm-(stache.width/2)+(nose.width()/2)
                 ymust = yf+ym+(2*nose.height()/3)
-                #blit the stache/mask onto the image
-                # nose.draw()
                 #코에 수엄 표시
                 myLayer.blit(stache, (xmust,ymust))
                 #얼굴영역 표시
-                myLayer.circle((facesort.x, facesort.y), 100, Color.BLUE)
+                myLayer.circle((facesort.x, facesort.y), facesort.height() * 0.7, Color.BLUE)
                 img.addDrawingLayer(myLayer)
                 # img.scale(2.0)
 
@@ -81,6 +76,5 @@ while ( display.isNotDone() ):
     elif face is None:
         print "FACE is NONE"
         # img.scale(2.0)
-
 
     img.show()
