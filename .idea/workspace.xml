@@ -49,8 +49,8 @@
       <file leaf-file-name="cv2imageoverlap.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cv2imageoverlap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.7419355" vertical-offset="563" max-vertical-offset="1152">
-              <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.7096774" vertical-offset="972" max-vertical-offset="1584">
+              <caret line="76" column="52" selection-start-line="76" selection-start-column="49" selection-end-line="76" selection-end-column="52" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
               </folding>
@@ -144,6 +144,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="visitors" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="untitled" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="py-visitor-counter" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HaarCascades" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -595,8 +609,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cv2imageoverlap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.7419355" vertical-offset="563" max-vertical-offset="1152">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.7096774" vertical-offset="972" max-vertical-offset="1584">
+          <caret line="76" column="52" selection-start-line="76" selection-start-column="49" selection-end-line="76" selection-end-column="52" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
           </folding>
