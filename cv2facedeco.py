@@ -1,17 +1,8 @@
-#-*- coding: utf-8 -*-
-
 __author__ = 'youngbin'
-
 import cv2
-import numpy
-
-MIN_MATCH_COUNT = 10
-ORB = cv2.FastFeatureDetector_create(100,1,"ORB")
-
-
+s_img = cv2.imread("small.png")
 cap = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier('HaarCascades/face.xml')
-
 
 while(True):
     print "new frame"
@@ -28,6 +19,11 @@ while(True):
         roi_gray = gray[y:y+h, x:x+w]
         roi_color = frame[y:y+h, x:x+w]
         
+        x_offset=x
+        y_offset=y
+        s_img = cv2.resize(s_img, (w,h))
+        frame[y_offset:y_offset+s_img.shape[0], x_offset:x_offset+s_img.shape[1]] = s_img
+        
 
 
         
@@ -41,5 +37,3 @@ while(True):
 # When everything done, release the capture
 cap.release()
 cv2.destroyAllWindows()
-
-
