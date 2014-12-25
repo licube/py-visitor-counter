@@ -4,12 +4,14 @@ import numpy as np
 face_cascade = cv2.CascadeClassifier('HaarCascades/face.xml')
 twoeye_cascade = cv2.CascadeClassifier('HaarCascades/two_eyes_big.xml')
 mouth_cascade = cv2.CascadeClassifier('HaarCascades/mouth.xml')
+nose_cascade = cv2.CascadeClassifier('HaarCascades/nose.xml')
 
 # read images
 original = cv2.imread("large.jpg")
 fdeco = cv2.imread("stache.png")
-edeco = cv2.imread("stache.png")
+edeco = cv2.imread("eyes_deco/glasses1.png")
 mdeco = cv2.imread("stache.png")
+ndeco = cv2.imread("stache.png")
 
 
 gray = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
@@ -23,6 +25,7 @@ for (x,y,w,h) in faces:
         roi_color = original[y:y+h, x:x+w]
         eyes = twoeye_cascade.detectMultiScale(roi_gray)
         mouthes = mouth_cascade.detectMultiScale(roi_gray)
+        noses = nose_cascade.detectMultiScale(roi_gray)
         x_offset=1
         y_offset=1
         fdeco = cv2.resize(fdeco, (w,h))
@@ -104,6 +107,31 @@ for (x,y,w,h) in faces:
                 mdst = cv2.add(mouthcrop,mdeco_fg) # ERROR
 
                 original[y+my:y+my+mh, x+mx:x+mx+mw] = mdst
+
+        for (nx,ny,nw,nh) in noses:
+                nosecrop = roi_color[ny:ny+nh, nx:nx+nw]
+                cv2.rectangle(roi_color,(nx,ny),(nx+nw,ny+nh),(0,255,0),2)
+                ndeco = cv2.resize(ndeco, (nw,nh))
+
+                nrows,ncols,nchannels = ndeco.shape
+                nroi = roi_color[0:nrows, 0:ncols ]
+
+                # Now create a mask of logo and create its inverse mask also
+                ndecogray = cv2.cvtColor(ndeco,cv2.COLOR_BGR2GRAY)
+                ret, nmask = cv2.threshold(ndecogray, 10, 255, cv2.THRESH_BINARY)
+                nmask_inv = cv2.bitwise_not(nmask)
+
+                # Now black-out the area of logo in ROI
+                noriginal_bg = cv2.bitwise_and(nroi, nroi, mask = nmask_inv)
+
+
+                # Take only region of logo from logo image.
+                ndeco_fg = cv2.bitwise_and(ndeco,ndeco,mask = nmask)
+
+                # Put logo in ROI and modify the main image
+                ndst = cv2.add(nosecrop,ndeco_fg) # ERROR
+
+                original[y+ny:y+ny+nh, x+nx:x+nx+nw] = ndst
 
         cv2.imshow('img',original)
         # cv2.imshow('crop',crop_img)
