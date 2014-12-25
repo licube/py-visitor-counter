@@ -82,8 +82,7 @@ for (x,y,w,h) in faces:
 
         for (mx,my,mw,mh) in mouthes:
                 mouthcrop = roi_color[my:my+mh, mx:mx+mw]
-                cv2.rectangle(roi_color,(mx,my)
-                              ,(mx+mw,my+mh),(0,255,0),2)
+                cv2.rectangle(roi_color,(mx,my),(mx+mw,my+mh),(0,255,0),2)
                 mdeco = cv2.resize(mdeco, (mw,mh))
 
                 mrows,mcols,mchannels = mdeco.shape
