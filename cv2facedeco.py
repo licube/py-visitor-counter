@@ -7,14 +7,14 @@ twoeye_cascade = cv2.CascadeClassifier('HaarCascades/two_eyes_big.xml')
 mouth_cascade = cv2.CascadeClassifier('HaarCascades/mouth.xml')
 nose_cascade = cv2.CascadeClassifier('HaarCascades/nose.xml')
 
-# read images
-original = cv2.imread("large.jpg")
-fdeco = cv2.imread("stache.png")
-edeco = cv2.imread("eyes_deco/glasses1.png")
-mdeco = cv2.imread("stache.png")
-ndeco = cv2.imread("stache.png")
-
 while(True):
+    # read images
+    original = cv2.imread("large.jpg")
+    fdeco = cv2.imread("face_deco/0.png")
+    edeco = cv2.imread("eyes_deco/0.png")
+    # mdeco = cv2.imread("stache.png")
+    ndeco = cv2.imread("nose_deco/1.png")
+    print "++++++++++"
     print "new frame"
     # Capture frame-by-frame
     ret, frame = cap.read()
@@ -66,8 +66,9 @@ while(True):
         original[y:y+h, x:x+w] = dst
 
         for (ex,ey,ew,eh) in eyes:
+                print "found eyes"
                 eyecrop = roi_color[ey:ey+eh, ex:ex+ew]
-                cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+                # cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
                 edeco = cv2.resize(edeco, (ew,eh))
 
                 erows,ecols,echannels = edeco.shape
@@ -90,34 +91,35 @@ while(True):
 
                 original[y+ey:y+ey+eh, x+ex:x+ex+ew] = edst
 
-        for (mx,my,mw,mh) in mouthes:
-                mouthcrop = roi_color[my:my+mh, mx:mx+mw]
-                cv2.rectangle(roi_color,(mx,my),(mx+mw,my+mh),(0,255,0),2)
-                mdeco = cv2.resize(mdeco, (mw,mh))
-
-                mrows,mcols,mchannels = mdeco.shape
-                mroi = roi_color[0:mrows, 0:mcols ]
-
-                # Now create a mask of logo and create its inverse mask also
-                mdecogray = cv2.cvtColor(mdeco,cv2.COLOR_BGR2GRAY)
-                ret, mmask = cv2.threshold(mdecogray, 10, 255, cv2.THRESH_BINARY)
-                mmask_inv = cv2.bitwise_not(mmask)
-
-                # Now black-out the area of logo in ROI
-                moriginal_bg = cv2.bitwise_and(mroi, mroi, mask = mmask_inv)
-
-
-                # Take only region of logo from logo image.
-                mdeco_fg = cv2.bitwise_and(mdeco,mdeco,mask = mmask)
-
-                # Put logo in ROI and modify the main image
-                mdst = cv2.add(mouthcrop,mdeco_fg) # ERROR
-
-                original[y+my:y+my+mh, x+mx:x+mx+mw] = mdst
+        # for (mx,my,mw,mh) in mouthes:
+        #         mouthcrop = roi_color[my:my+mh, mx:mx+mw]
+        #         cv2.rectangle(roi_color,(mx,my),(mx+mw,my+mh),(0,255,0),2)
+        #         mdeco = cv2.resize(mdeco, (mw,mh))
+        #
+        #         mrows,mcols,mchannels = mdeco.shape
+        #         mroi = roi_color[0:mrows, 0:mcols ]
+        #
+        #         # Now create a mask of logo and create its inverse mask also
+        #         mdecogray = cv2.cvtColor(mdeco,cv2.COLOR_BGR2GRAY)
+        #         ret, mmask = cv2.threshold(mdecogray, 10, 255, cv2.THRESH_BINARY)
+        #         mmask_inv = cv2.bitwise_not(mmask)
+        #
+        #         # Now black-out the area of logo in ROI
+        #         moriginal_bg = cv2.bitwise_and(mroi, mroi, mask = mmask_inv)
+        #
+        #
+        #         # Take only region of logo from logo image.
+        #         mdeco_fg = cv2.bitwise_and(mdeco,mdeco,mask = mmask)
+        #
+        #         # Put logo in ROI and modify the main image
+        #         mdst = cv2.add(mouthcrop,mdeco_fg) # ERROR
+        #
+        #         original[y+my:y+my+mh, x+mx:x+mx+mw] = mdst
 
         for (nx,ny,nw,nh) in noses:
+                print "found noses"
                 nosecrop = roi_color[ny:ny+nh, nx:nx+nw]
-                cv2.rectangle(roi_color,(nx,ny),(nx+nw,ny+nh),(0,255,0),2)
+                # cv2.rectangle(roi_color,(nx,ny),(nx+nw,ny+nh),(0,255,0),2)
                 ndeco = cv2.resize(ndeco, (nw,nh))
 
                 nrows,ncols,nchannels = ndeco.shape
@@ -139,11 +141,6 @@ while(True):
                 ndst = cv2.add(nosecrop,ndeco_fg) # ERROR
 
                 original[y+ny:y+ny+nh, x+nx:x+nx+nw] = ndst
-
-
-
-
-        
 
 
     # Display the resulting frame
